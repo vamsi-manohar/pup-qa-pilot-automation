@@ -2,23 +2,23 @@
 <testng-results ignored="0" total="1" passed="1" failed="0" skipped="0">
   <reporter-output>
   </reporter-output>
-  <suite started-at="2021-10-20T04:15:41 IST" name="Suite" finished-at="2021-10-20T04:16:16 IST" duration-ms="35078">
+  <suite started-at="2021-10-20T11:04:10 IST" name="Suite" finished-at="2021-10-20T11:04:49 IST" duration-ms="38588">
     <groups>
     </groups>
-    <test started-at="2021-10-20T04:15:41 IST" name="Test" finished-at="2021-10-20T04:16:16 IST" duration-ms="35078">
-      <class name="com.productsup.platform.tests.PlatformOptionsTest">
-        <test-method is-config="true" signature="setUp([Ljava.lang.Object;)[pri:0, instance:com.productsup.platform.tests.PlatformOptionsTest@729d991e]" started-at="2021-10-20T04:15:42 IST" name="setUp" finished-at="2021-10-20T04:15:44 IST" duration-ms="2854" status="PASS">
+    <test started-at="2021-10-20T11:04:10 IST" name="Test" finished-at="2021-10-20T11:04:49 IST" duration-ms="38588">
+      <class name="com.productsup.platform.tests.NavigationMenuOptionsTest">
+        <test-method is-config="true" signature="setUp([Ljava.lang.Object;)[pri:0, instance:com.productsup.platform.tests.NavigationMenuOptionsTest@2c1b194a]" started-at="2021-10-20T11:04:11 IST" name="setUp" finished-at="2021-10-20T11:04:15 IST" duration-ms="4034" status="PASS">
           <params>
             <param index="0">
               <value>
-                <![CDATA[[Ljava.lang.Object;@5eb97ced]]>
+                <![CDATA[[Ljava.lang.Object;@4cdd2c73]]>
               </value>
             </param>
           </params>
           <reporter-output>
           </reporter-output>
         </test-method> <!-- setUp -->
-        <test-method signature="validatePlatformOptions(java.util.Map)[pri:0, instance:com.productsup.platform.tests.PlatformOptionsTest@729d991e]" started-at="2021-10-20T04:15:44 IST" name="validatePlatformOptions" description="To validate various menu options available at different hirrearchies on the platfrom" data-provider="getData" finished-at="2021-10-20T04:16:15 IST" duration-ms="30808" status="PASS">
+        <test-method signature="validatePlatformOptions(java.util.Map)[pri:0, instance:com.productsup.platform.tests.NavigationMenuOptionsTest@2c1b194a]" started-at="2021-10-20T11:04:15 IST" name="validatePlatformOptions" description="To validate various menu options available at different hirrearchies on the platfrom" data-provider="getData" finished-at="2021-10-20T11:04:49 IST" duration-ms="33234" status="PASS">
           <params>
             <param index="0">
               <value>
@@ -29,11 +29,11 @@
           <reporter-output>
           </reporter-output>
         </test-method> <!-- validatePlatformOptions -->
-        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.productsup.platform.tests.PlatformOptionsTest@729d991e]" started-at="2021-10-20T04:16:15 IST" name="tearDown" finished-at="2021-10-20T04:16:16 IST" duration-ms="329" status="PASS">
+        <test-method is-config="true" signature="tearDown()[pri:0, instance:com.productsup.platform.tests.NavigationMenuOptionsTest@2c1b194a]" started-at="2021-10-20T11:04:49 IST" name="tearDown" finished-at="2021-10-20T11:04:49 IST" duration-ms="296" status="PASS">
           <reporter-output>
           </reporter-output>
         </test-method> <!-- tearDown -->
-      </class> <!-- com.productsup.platform.tests.PlatformOptionsTest -->
+      </class> <!-- com.productsup.platform.tests.NavigationMenuOptionsTest -->
     </test> <!-- Test -->
   </suite> <!-- Suite -->
 </testng-results>

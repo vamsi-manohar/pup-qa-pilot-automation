@@ -11,7 +11,7 @@
     <classes>
 
         <class name="com.productsup.platform.tests.DataviewTest"/>
-         <class name="com.productsup.platform.tests.PlatformOptionsTest"/>
+         <class name="com.productsup.platform.tests.NavigationMenuOptionsTest"/>
     </classes>
   </test> <!-- Test -->
 </suite> 
