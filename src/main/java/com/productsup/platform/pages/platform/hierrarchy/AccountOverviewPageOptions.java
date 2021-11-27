@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import com.productsup.platform.pages.login.LoginPage;
+import com.productsup.platform.pages.PlatformRouting;
+import com.productsup.platform.pages.platformactions.PlatformHierarchy;
 
 public class AccountOverviewPageOptions implements PlatformHierarchy {
 
-	List<String> menuOptions = new ArrayList<>();
+	private List<String> menuOptions = new ArrayList<>();
 
 	@Override
 	public void selectPlatformHierarchy(Map<String, String> details) {
-		new LoginPage().loginToPlatform();
+
+		// This implementation for account level is not needed
 
 	}
 

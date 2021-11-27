@@ -33,7 +33,8 @@ public final class ExcelUtils {
 			int cols = sheet.getRow(0).getLastCellNum();
 			Map<String, String> map = null;
 			list = new ArrayList<>();
-			for (int i = 1; i <= rows; i++) {
+			for (int i = 1; i <= rows; i++)
+			{
 				map = new HashMap<>(); 
 				for (int j = 0; j < cols; j++) {
 					String key = sheet.getRow(0).getCell(j).getStringCellValue();

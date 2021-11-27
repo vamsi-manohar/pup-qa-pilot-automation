@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.base.Supplier;
+import com.productsup.platform.pages.platformactions.PlatformHierarchy;
 
 public class PlatformHierarchyFactory {
 

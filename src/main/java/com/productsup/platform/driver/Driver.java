@@ -63,6 +63,7 @@ public final class Driver {
 	public static void quitDriver() {
 		if (Objects.nonNull(DriverManager.getDriver())) {
 			DriverManager.getDriver().quit();
+			System.out.println("Driver instance is closed");
 			DriverManager.unload();
 		}
 	}

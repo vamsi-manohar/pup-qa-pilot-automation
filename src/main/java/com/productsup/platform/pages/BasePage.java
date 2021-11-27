@@ -3,6 +3,7 @@ package com.productsup.platform.pages;
 import java.util.NoSuchElementException;
 import java.util.concurrent.TimeUnit;
 
+import com.productsup.platform.driver.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.StaleElementReferenceException;
@@ -20,7 +21,7 @@ public class BasePage {
 
 	protected WebDriverWait wait;
 
-	protected void click(By by, WaitStrategy waitStrategy) {
+	public void click(By by, WaitStrategy waitStrategy) {
 
 		ExplicitWaitFactory.performExplicitWait(waitStrategy, by).click();
 	}
@@ -29,9 +30,14 @@ public class BasePage {
 		ExplicitWaitFactory.performExplicitWait(waitStrategy, by).sendKeys(keys);
 	}
 
-	protected void click(WebElement element, WaitStrategy waitStrategy) {
+	public static void click(WebElement element, WaitStrategy waitStrategy) {
 
 		ExplicitWaitFactory.performExplicitWait(waitStrategy, element).click();
+	}
+
+	public static void sendKeys(WebElement element,WaitStrategy waitStrategy, String keys)
+	{
+		ExplicitWaitFactory.performExplicitWait(waitStrategy, element).sendKeys(keys);
 	}
 
 	protected void mouseHoverOnWebElement(WebElement element) {
@@ -49,7 +55,7 @@ public class BasePage {
 		}
 	}
 
-	protected void mouseHover(By by) {
+	public static void mouseHover(By by) {
 		Actions action = new Actions(DriverManager.getDriver());
 		action.moveToElement(DriverManager.getDriver().findElement(by)).build().perform();
 	}
@@ -59,10 +65,73 @@ public class BasePage {
 		select.selectByValue(value);
 	}
 
+	public static void selectValueFromDropdown(WebElement element, String value)
+	{
+		Select select = new Select(element);
+		select.selectByVisibleText(value);
+	}
+
 	protected void dragAndDrop(By sourceLocation, By destinationLocation) {
 		Actions action = new Actions(DriverManager.getDriver());
 		action.dragAndDrop(DriverManager.getDriver().findElement(sourceLocation),
 				DriverManager.getDriver().findElement(destinationLocation)).build().perform();
 	}
 
+
+	protected String getText(By ele)
+	{
+		return DriverManager.getDriver().findElement(ele).getText();
+	}
+
+	protected String getText(WebElement element)
+	{
+		return element.getText();
+	}
+
+
+	public static void scrollIntoView(By element)
+	{
+		JavascriptExecutor je = (JavascriptExecutor) DriverManager.getDriver();
+		je.executeScript("arguments[0].scrollIntoView(true);",DriverManager.getDriver().findElement(element));
+
+	}
+
+	public static void scrollIntoView(WebElement element)
+	{
+		JavascriptExecutor je = (JavascriptExecutor) DriverManager.getDriver();
+		je.executeScript("arguments[0].scrollIntoView(true);",(element));
+
+	}
+
+	protected void clickUsingJSExecutor(By by)
+	{
+		try {
+			if (DriverManager.getDriver().findElement(by).isDisplayed()) {
+
+				JavascriptExecutor executor = (JavascriptExecutor) DriverManager.getDriver();
+				executor.executeScript("arguments[0].click();", DriverManager.getDriver().findElement(by));
+			}
+		} catch (StaleElementReferenceException e) {
+		} catch (NoSuchElementException e) {
+		} catch (Exception e) {
+
+		}
+	}
+
+	protected void clickUsingJSExecutor(WebElement element)
+	{
+		try {
+			if (element.isDisplayed()) {
+
+				this.wait=new WebDriverWait(DriverManager.getDriver(),10);
+				this.wait.until(d->element.isDisplayed());
+				JavascriptExecutor executor = (JavascriptExecutor)  DriverManager.getDriver();
+				executor.executeScript("arguments[0].click();", element);
+			}
+		} catch (StaleElementReferenceException e) {
+		} catch (NoSuchElementException e) {
+		} catch (Exception e) {
+
+		}
+	}
 }

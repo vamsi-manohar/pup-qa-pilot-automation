@@ -3,6 +3,7 @@ package com.productsup.platform.pages.login;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import com.productsup.platform.pages.site.SiteDashboard;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -11,7 +12,7 @@ import com.google.common.util.concurrent.Uninterruptibles;
 import com.productsup.platform.driver.DriverManager;
 import com.productsup.platform.enums.WaitStrategy;
 import com.productsup.platform.pages.BasePage;
-import com.productsup.platform.pages.overview.SiteDashboardPage;
+
 
 public final class OverviewPage extends BasePage {
 
@@ -44,7 +45,7 @@ public final class OverviewPage extends BasePage {
 		return this;
 	}
 
-	public SiteDashboardPage selectSite(String siteName) {
+	public SiteDashboard selectSite(String siteName) {
 		  Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
 		for (int i = 0; i < sitesList.size(); i++) {
 			if (sitesList.get(i).getText().contains(siteName)) {
@@ -56,7 +57,7 @@ public final class OverviewPage extends BasePage {
 
 		}
 
-		return new SiteDashboardPage();
+		return new SiteDashboard();
 
 	}
 
