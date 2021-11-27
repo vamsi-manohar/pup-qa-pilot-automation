@@ -39,7 +39,8 @@ public class ListenerClass implements ITestListener, ISuiteListener {
 
 	@Override
 	public void onTestSuccess(ITestResult result) {
-		ExtentLogger.pass(result.getMethod().getMethodName() + " PASSED ",true);
+		//ExtentLogger.pass(result.getMethod().getMethodName() + " PASSED ",true);
+		ExtentLogger.pass(result.getMethod().getDescription()+ " PASSED ",true);
 
 		//ELKUtils.addDetailsToELK(result.getMethod().getDescription(),"pass");
 	}

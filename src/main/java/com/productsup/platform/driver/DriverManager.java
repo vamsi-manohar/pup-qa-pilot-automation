@@ -51,6 +51,7 @@ public final class DriverManager {
 	 * 
 	 */
 	static void unload() {
+		System.out.println("Driver Removed");
 		dr.remove();
 	}
 

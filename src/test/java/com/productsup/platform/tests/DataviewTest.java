@@ -2,37 +2,44 @@ package com.productsup.platform.tests;
 
 import java.util.Map;
 
+import com.productsup.platform.enums.Navigations;
+import com.productsup.platform.pages.PlatformRouting;
+import com.productsup.platform.pages.login.LoginPage;
+import com.productsup.platform.pages.site.dataview.DataViewFactory;
+import com.productsup.platform.pages.site.dataview.DataviewActions;
+import com.productsup.platform.reports.ExtentLogger;
+import org.assertj.core.api.AutoCloseableSoftAssertions;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.productsup.platform.annotations.FrameworkAnnotation;
 import com.productsup.platform.enums.CategoryType;
-import com.productsup.platform.pages.login.LoginPage;
 
-public class DataviewTest extends BaseTest {
+public final class DataviewTest extends BaseTest {
 
 	private DataviewTest() {
 
 	}
 
-	@FrameworkAnnotation(author = { "Vamsi" }, category = { CategoryType.SMOKE })
+	@FrameworkAnnotation(author = {"Vamsi"}, category = {CategoryType.SMOKE})
 	@Test
-	public void addUppercaseToHumanRuleBox(Map<String, String> data) {
-		new LoginPage().loginToPlatform().selectProject(data.get("Project_Name")).selectSite(data.get("Site_Name"))
-				.navigateToDataView().selectOptimizationLevelFor(data.get("Dataview_Template"))
-				.selectAttribute(data.get("Product_Attrribute")).addRuleBox(data.get("Rule_Box"),data.get("Apply_Rulebox_At"));
-		
-	}
+	public void addRuleBoxes(Map<String, String> data) {
 
-	
-	@FrameworkAnnotation(author = { "Vamsi Manohar" }, category = { CategoryType.REGRESSION })
-	@Test
-	public void addRemoveHTMLTagsRuleBox(Map<String, String> data) {
-		
-		new LoginPage().loginToPlatform().selectProject(data.get("Project_Name")).selectSite(data.get("Site_Name"))
-				.navigateToDataView().selectOptimizationLevelFor(data.get("Dataview_Template"))
-				.selectAttribute(data.get("Product_Attrribute")).addRuleBox(data.get("Rule_Box"),data.get("Apply_Rulebox_At"));
-	}
-	
-	
+		try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions()) {
 
+			ExtentLogger.info("Rule box added => " + data.get("Rule_Box"));
+			DataviewActions dataviewActions = new DataviewActions();
+			dataviewActions.setDataView(DataViewFactory.get(data.get("Rule_Box")));
+			softly.assertThat(dataviewActions.setupDataView(data)).isEqualTo(true);
+		}
+
+	}
 }
+
+
+
+
+	
+	
+
+

@@ -25,13 +25,12 @@ public final class ExplicitWaitFactory {
 
 	}
 
-	
+
 	/**
-	 * 
-	 * @author K Vamsi Manohar
-	 * @param waitStrategy  Strategy to be applied on a WebElement and can be chosen from WaitStrategy Enums class
-	 * @param by By locator of the WebElement
+	 * @param waitStrategy Strategy to be applied on a WebElement and can be chosen from WaitStrategy Enums class
+	 * @param by           By locator of the WebElement
 	 * @return the WebElement
+	 * @author K Vamsi Manohar
 	 */
 	public static WebElement performExplicitWait(WaitStrategy waitStrategy, By by) {
 
@@ -43,16 +42,16 @@ public final class ExplicitWaitFactory {
 		} else if (waitStrategy == WaitStrategy.PRESENCE) {
 			element = new WebDriverWait(DriverManager.getDriver(), Constants.getTimeOut())
 					.until(ExpectedConditions.presenceOfElementLocated(by));
-		}
 
-		else if (waitStrategy == WaitStrategy.NONE) {
+		} else if (waitStrategy == WaitStrategy.NONE)
+		{
 			element = DriverManager.getDriver().findElement(by);
 		}
 
 		return element;
 	}
-	
-	
+
+
 	public static WebElement performExplicitWait(WaitStrategy waitStrategy, WebElement ele) {
 
 		WebElement element = null;
@@ -63,18 +62,23 @@ public final class ExplicitWaitFactory {
 		} else if (waitStrategy == WaitStrategy.VISIBLE) {
 			element = new WebDriverWait(DriverManager.getDriver(), Constants.getTimeOut())
 					.until(ExpectedConditions.visibilityOf(ele));
-		}
-	
-		else if (waitStrategy == WaitStrategy.NONE) {
+		} else if (waitStrategy == WaitStrategy.NONE) {
 			element = ele;
 		}
 
 		return element;
 	}
-	
-	
-	
-	
+
+	public static boolean performExplicitWaitChecks(WaitStrategy waitStrategy, By by) {
+
+		boolean flag=false;
+
+		if (waitStrategy == WaitStrategy.DISAPPEAR) {
+			flag =  new WebDriverWait(DriverManager.getDriver(), Constants.getTimeOut())
+					.until(ExpectedConditions.invisibilityOfElementLocated(by));
 
 
+		}
+		 return flag;
+	}
 }

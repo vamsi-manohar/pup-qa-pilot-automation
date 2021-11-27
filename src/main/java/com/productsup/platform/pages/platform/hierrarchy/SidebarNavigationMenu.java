@@ -15,7 +15,7 @@ import com.productsup.platform.pages.BasePage;
 
 public class SidebarNavigationMenu extends BasePage {
 
-	List<String> availableOptions = new ArrayList<>();
+	private List<String> availableOptions = new ArrayList<>();
 
 	public SidebarNavigationMenu() {
 		PageFactory.initElements(DriverManager.getDriver(), this);
@@ -30,7 +30,9 @@ public class SidebarNavigationMenu extends BasePage {
 		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
 		mouseHover(navBar);
 		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-		for (int i = 0; i < menuOptions.size(); i++) {
+		for (int i = 0; i < menuOptions.size(); i++)
+		{
+			scrollIntoView(menuOptions.get(i));
 			availableOptions.add(menuOptions.get(i).getText());
 		}
 
