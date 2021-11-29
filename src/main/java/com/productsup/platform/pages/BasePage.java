@@ -77,6 +77,12 @@ public class BasePage {
 				DriverManager.getDriver().findElement(destinationLocation)).build().perform();
 	}
 
+	protected void dragAndDrop(By sourceLocation, WebElement destinationLocation) {
+		Actions action = new Actions(DriverManager.getDriver());
+		action.dragAndDrop(DriverManager.getDriver().findElement(sourceLocation),
+				destinationLocation).build().perform();
+	}
+
 
 	protected String getText(By ele)
 	{

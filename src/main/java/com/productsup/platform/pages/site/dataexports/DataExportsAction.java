@@ -39,11 +39,12 @@ public class DataExportsAction {
     public boolean peformExportOperations(Map<String,String>data)
     {
 
-        new SiteNavigations().navigateToDataFlowPage()
+       /* new SiteNavigations().navigateToDataFlowPage()
                 .selectExportChannel(data.get("Export_Channel"))
                 .addAdditionalAttributes(DataFlowPage.INTERMEDIATE,"Automated_attr")
                 .addAdditionalAttributes(DataFlowPage.EXPORT,"Automated_attr")
                 .performMappingFromIntermediateToExport();
+                */
         return true;
     }
 
