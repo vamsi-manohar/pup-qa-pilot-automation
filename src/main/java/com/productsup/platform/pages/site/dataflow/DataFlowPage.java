@@ -1,6 +1,7 @@
 package com.productsup.platform.pages.site.dataflow;
 
 import com.google.common.util.concurrent.Uninterruptibles;
+import com.productsup.platform.driver.Driver;
 import com.productsup.platform.driver.DriverManager;
 
 import com.productsup.platform.enums.WaitStrategy;
@@ -22,14 +23,30 @@ public class DataFlowPage extends BasePage {
 
     private WebDriverWait wait;
 
-    public static final String INTERMEDIATE = "intermediate";
-    public static final String EXPORT = "export";
+    public  final String INTERMEDIATE = "intermediate";
+    public  final String EXPORT = "export";
+    public  final String INPUT_MODE = "input";
+    public  final String OUTPUT_MODE = "output";
 
     private String addAttributelevel="li[class*='add-%s-column']";
     private String attributeInfo="input[class*='add-%s-column']";
     private String saveAttribute="button[class*='add-%s-column']";
     private String ruleBoxLines="g[column='%replace1%'][mode='%replace2%'] line[boxes]";
     private String circle = "g[column='%replace1%][mode='%replace2%'] circle[class='step']";
+    private String intermediateAttributeInfo="div[class='connection-output output-intermediate'][name='%s']";
+    private String exportAttributeInfo="div[class='connection-input input-target'][name='%s']";
+    //private String clickedIntermedaiteAttr="div[class='connection-output output-intermediate click-from'][name='%s']";
+
+    private String exportAttributeEnabled="div[class='connection-input input-target enable-input-click'][name='%s']";
+
+    private String line = "g[column='%replace1%'][mode='%replace2%']";
+    private String mappedAttributeLine="g[column='%s'] line[id*='connection']";
+    private String deleteConnection="button[class*='danger'][column='%replace1%'][mode='%replace2%']";
+    private String attributeTile="a[href*='%replace1%'][title='%replace2%']";
+
+    @FindBy(xpath = "//button[text()='OK']")
+            private List<WebElement> okBtns;
+
 
     Map<String, Integer> intermediateToExportMapping = new CaseInsensitiveMap<String, Integer>();
     List<String> exportAttr = new ArrayList<String>();
@@ -62,6 +79,24 @@ public class DataFlowPage extends BasePage {
     @FindBy(css="div[class='connection-input input-target enable-input-click']")
     public List<WebElement>exportList;
 
+    @FindBy(css="li[class='add-export-column js-add-export-column']")
+    private WebElement dragAtExport;
+
+    @FindBy(xpath="//button[text()='Yes']")
+    private WebElement confirmDeleteLinks;
+
+    @FindBy(css="div[class*='ajs-success']")
+    private WebElement linkRemovedSuccessMsg;
+
+    @FindBy(css="li[class*='custom highlight'] button[class*='delete-custom']")
+    private WebElement deleteAttributeBtn;
+
+    @FindBy(id="delete-line")
+    private WebElement deleteLine;
+
+    @FindBy(css="div[class='alertify  ajs-movable ajs-closable ajs-pinnable ajs-pulse'] button[class*='ok']")
+    private WebElement removeConnectionBtn;
+
 
 
     public DataFlowPage()
@@ -72,7 +107,9 @@ public class DataFlowPage extends BasePage {
     }
 
 
-
+    /**
+     * Expanding the export channels list
+     */
     public void expandChannelsList()
     {
         DriverManager.getDriver().switchTo().frame(dataflowFrame);
@@ -103,15 +140,59 @@ public class DataFlowPage extends BasePage {
     }
 
 
+    public void linkToExportByDragAndDrop(String attribute)
+    {
+        Uninterruptibles.sleepUninterruptibly(3,TimeUnit.SECONDS);
+         click(By.cssSelector(DynamicLocatorStrategy.
+                 getDynamicLocator(intermediateAttributeInfo,attribute)),WaitStrategy.CLICKABLE);
+        click(By.cssSelector(DynamicLocatorStrategy.
+                getDynamicLocator(exportAttributeEnabled,attribute)),WaitStrategy.CLICKABLE);
+        Uninterruptibles.sleepUninterruptibly(5,TimeUnit.SECONDS);
+
+    }
+
+
+    public DataFlowPage deleteLinks(String attribute, String mode)
+    {
+        Uninterruptibles.sleepUninterruptibly(5,TimeUnit.SECONDS);
+        String locator = DynamicLocatorStrategy.getDynamicLocator(line,attribute,mode);
+        //clickUsingJSExecutor(By.cssSelector(locator));
+        click(By.cssSelector(locator),WaitStrategy.CLICKABLE);
+        this.wait.until(d->deleteLine.isDisplayed());
+        click(deleteLine,WaitStrategy.CLICKABLE);
+        confirmDeleteConnection();
+        DriverManager.getDriver().switchTo().frame(dataflowFrame);
+        return this;
+
+    }
+    public DataFlowPage deleteAttributes(String attribute, String mode)
+    {
+         mouseHover(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(attributeTile,mode,attribute)));
+         this.wait.until(d->deleteAttributeBtn.isDisplayed());
+         click(deleteAttributeBtn,WaitStrategy.CLICKABLE);
+         DriverManager.getDriver().switchTo().defaultContent();
+         this.wait.until(d->removeConnectionBtn.isDisplayed());
+         click(removeConnectionBtn,WaitStrategy.CLICKABLE);
+         DriverManager.getDriver().switchTo().frame(dataflowFrame);
+         return this;
+    }
+
+    /**
+     *   Adds Additional Attributes at Intermediate and Export Levels
+     * @param platformLevel
+     * @param info
+     * @return
+     */
     public DataFlowPage addAdditionalAttributes(String platformLevel, String info)
     {
+
         scrollIntoView(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(addAttributelevel,platformLevel)));
-       click(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(addAttributelevel,platformLevel)),WaitStrategy.CLICKABLE);
+        click(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(addAttributelevel,platformLevel)),WaitStrategy.CLICKABLE);
         Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-       sendKeys(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(attributeInfo,platformLevel)),info,WaitStrategy.PRESENCE);
-       click(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(saveAttribute,platformLevel)),WaitStrategy.CLICKABLE);
+        sendKeys(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(attributeInfo,platformLevel)),info,WaitStrategy.PRESENCE);
+        click(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(saveAttribute,platformLevel)),WaitStrategy.CLICKABLE);
         Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-       return this;
+        return this;
     }
 
 
@@ -136,6 +217,14 @@ public class DataFlowPage extends BasePage {
         }
     }
 
+
+    public void confirmDeleteConnection()
+    {
+        DriverManager.getDriver().switchTo().defaultContent();
+        this.wait.until(d->removeConnectionBtn.isDisplayed());
+        click(removeConnectionBtn,WaitStrategy.CLICKABLE);
+        this.wait.until(d->linkRemovedSuccessMsg.isDisplayed());
+    }
 
 
 
@@ -179,6 +268,10 @@ public class DataFlowPage extends BasePage {
         }
             return false;
     }
+
+
+
+
 
 
 }

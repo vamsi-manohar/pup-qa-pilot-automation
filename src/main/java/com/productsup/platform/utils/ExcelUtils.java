@@ -45,18 +45,13 @@ public final class ExcelUtils {
 			}
 
 		} catch (FileNotFoundException e) {
-			
-			//Customizing the stack trace
-			
-			/*
-			 * StackTraceElement[] ex = e.getStackTrace(); ex[0]=new
-			 * StackTraceElement("org.personal.utils.ExcelUtils",
-			 * "getTestData","ExcelUtils.java",25); e.setStackTrace(ex);
-			 */
-			
 			throw new InvalidTestDataPathException("Test Data File is not found");
 		} catch (IOException e) {
 			throw new FrameworkExceptions("IO Exception while reading Excel File");
+		}
+		catch(NullPointerException npe)
+		{
+			npe.printStackTrace();
 		}
 		return list;
 	}

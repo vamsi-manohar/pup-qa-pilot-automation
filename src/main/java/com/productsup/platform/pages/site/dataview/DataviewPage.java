@@ -65,6 +65,9 @@ public  class DataviewPage extends  BasePage {
 	@FindBy(css="div[class*='stage-menu-container'] button")
 	private WebElement dropdownArrow;
 
+	@FindBy(css="span[column]")
+	private List<WebElement> getColumnLabels;
+
 	By button = By.cssSelector("div[class='btn-group stage-menu-container'] button");
 
 	By frame = By.className("viewFrame");
@@ -311,6 +314,19 @@ public  class DataviewPage extends  BasePage {
            DriverManager.getDriver().switchTo().defaultContent();
 
            return channelsList;
+	}
+
+
+	public List<String> getColumnLables()
+	{
+		List<String> allLabels= new ArrayList<>();
+		for(int i=0;i<getColumnLabels.size();i++)
+		{
+			allLabels.add(getColumnLabels.get(i).getText());
+		}
+		System.out.println("All Labels :: " +allLabels);
+
+		return allLabels;
 	}
 
 }
