@@ -1,13 +1,13 @@
 package com.productsup.platform.pages.monitor;
 
-import com.google.common.util.concurrent.Monitor;
 import com.google.common.util.concurrent.Uninterruptibles;
 import com.productsup.platform.driver.DriverManager;
-import com.productsup.platform.enums.MonitorStages;
+import com.productsup.platform.enums.Monitors;
 import com.productsup.platform.enums.WaitStrategy;
 import com.productsup.platform.pages.BasePage;
 import com.productsup.platform.pages.monitor.stages.Import;
 import com.productsup.platform.pages.monitor.stages.Intermediate;
+import com.productsup.platform.pages.site.SiteNavigations;
 import com.productsup.platform.utils.DynamicLocatorStrategy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -53,8 +53,20 @@ public class MonitorPage extends BasePage {
     @FindBy(css="pup-button[class*='danger'] button")
     private WebElement confirmDeleteEventBtn;
 
+    @FindBy(css="div[class='trigger'] span")
+    private List<WebElement>monitorActionsList;
+
+    @FindBy(css="pup-toggle div div")
+    private List<WebElement>actionToggles;
+
+    @FindBy(css="pup-heading span")
+    private WebElement pageTitle;
+
+
+
     private String monitorStage = "pup-card img[src*='%s']";
     private String severityLevel = "app-severity-label[class*='%s']";
+
 
 
     public MonitorPage() {
@@ -64,10 +76,10 @@ public class MonitorPage extends BasePage {
     }
 
 
-    private static EnumMap<MonitorStages, String> monitorStagesMapping = new EnumMap<MonitorStages, String>(MonitorStages.class);
+    private static EnumMap<Monitors, String> monitorStagesMapping = new EnumMap<Monitors, String>(Monitors.class);
 
     static {
-        for (MonitorStages stage : MonitorStages.values()) {
+        for (Monitors stage : Monitors.values()) {
             monitorStagesMapping.put(stage, stage.getData());
         }
     }
@@ -75,19 +87,28 @@ public class MonitorPage extends BasePage {
     private Map<String, String> errorEventsMapping = new HashMap<>();
 
 
-    public String getMonitorStages(MonitorStages monitorStages) {
+    public String getMonitorStages(Monitors monitorStages) {
         return monitorStages.getData();
     }
 
 
-    public void selectStage(MonitorStages monitorStages) {
+    /**
+     * Selecting the stages to add monitor events
+     * @param monitorStages
+     */
+    public void selectStage(Monitors monitorStages) {
         DriverManager.getDriver().switchTo().frame(frame);
         click(addErrorEventBtn, WaitStrategy.CLICKABLE);
         click(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(monitorStage, getMonitorStages(monitorStages))), WaitStrategy.CLICKABLE);
         click(continueButton, WaitStrategy.CLICKABLE);
     }
 
-    public void addErrorEvents(MonitorStages monitorStages) {
+
+    /**
+     * Adding Error events from the available List
+     * @param monitorStages
+     */
+    public void addErrorEvents(Monitors monitorStages) {
         this.wait.until(d->!errorEventsList.isEmpty());
         for (int i = 0; i < errorEventsList.size(); i++) {
             if (errorEventsList.get(i).getText().equalsIgnoreCase(getMonitorStages(monitorStages))) {
@@ -100,7 +121,36 @@ public class MonitorPage extends BasePage {
         }
     }
 
-    public void setSeverity(MonitorStages monitorStages) {
+
+    /**
+     * Adding monitor event actions
+     * @param monitorStages
+     */
+    public void addMonitorEventActions(Monitors monitorStages) {
+        for (int i = 0; i < monitorActionsList.size(); i++) {
+            if (monitorActionsList.get(i).getText().equalsIgnoreCase(getMonitorStages(monitorStages))) {
+                Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
+                click(actionToggles.get(i), WaitStrategy.CLICKABLE);
+                Uninterruptibles.sleepUninterruptibly(2, TimeUnit.SECONDS);
+                break;
+            }
+        }
+    }
+
+    /**
+     * Setting the severity of the error event
+     * @param monitorStages
+     */
+    public void setSeverity(Monitors monitorStages) {
+        click(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(severityLevel, getMonitorStages(monitorStages))), WaitStrategy.CLICKABLE);
+
+    }
+
+    /**
+     * Setting the action on the error event
+     * @param monitorStages
+     */
+    public void setAction(Monitors monitorStages) {
         click(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(severityLevel, getMonitorStages(monitorStages))), WaitStrategy.CLICKABLE);
         click(addBtn, WaitStrategy.CLICKABLE);
     }
@@ -113,21 +163,21 @@ public class MonitorPage extends BasePage {
      */
 
     public void setMonitorLevel(String level) {
-        switch (MonitorStages.valueOf(level)) {
+        switch (Monitors.valueOf(level)) {
             case IMPORT:
-                selectStage(MonitorStages.IMPORT);
+                selectStage(Monitors.IMPORT);
                 break;
 
             case INTERMEDIATE:
-                selectStage(MonitorStages.INTERMEDIATE);
+                selectStage(Monitors.INTERMEDIATE);
                 break;
 
             case EXPORT:
-                selectStage(MonitorStages.EXPORT);
+                selectStage(Monitors.EXPORT);
                 break;
 
             case GENERAL:
-                selectStage(MonitorStages.GENERAL);
+                selectStage(Monitors.GENERAL);
                 break;
 
         }
@@ -141,20 +191,19 @@ public class MonitorPage extends BasePage {
     public void setSeverityLevel(String severityLevel)
 
     {
-        switch (MonitorStages.valueOf(severityLevel))
+        switch (Monitors.valueOf(severityLevel))
         {
             case LOW:
-                setSeverity(MonitorStages.LOW);
+                setSeverity(Monitors.LOW);
                 break;
 
             case MEDIUM:
-                setSeverity(MonitorStages.MEDIUM);
+                setSeverity(Monitors.MEDIUM);
                 break;
 
             case HIGH:
-                setSeverity(MonitorStages.HIGH);
+                setSeverity(Monitors.HIGH);
                 break;
-
 
         }
     }
@@ -182,23 +231,36 @@ public class MonitorPage extends BasePage {
      * @param eventName
      * @return
      */
-    public boolean validateMonitorSetup(MonitorStages eventName)
+    public boolean validateMonitorSetup(Monitors eventName)
     {
+        click(addBtn, WaitStrategy.CLICKABLE);
         this.wait.until(d->!monitorsList.isEmpty());
        for(int i=0;i<monitorsList.size();i++)
        {
            scrollIntoView(addErrorEventBtn);
            if(monitorsList.get(i).getText().equalsIgnoreCase(getMonitorStages(eventName)))
            {
+               DriverManager.getDriver().switchTo().defaultContent();
                return true;
            }
        }
+        DriverManager.getDriver().switchTo().defaultContent();
        return false;
     }
 
 
+    /***
+     * Deleting the Monitor Events
+     * @return
+     */
     public boolean deleteMonitorEvents()
     {
+        if(!pageTitle.getText().equalsIgnoreCase("Monitor"))
+        {
+            new SiteNavigations().navigateToMonitorPage();
+            DriverManager.getDriver().switchTo().frame(frame);
+        }
+
         for(int i=0;i<monitorSettingsBtn.size();i++)
         {
             scrollIntoView(monitorSettingsBtn.get(i));
@@ -209,16 +271,30 @@ public class MonitorPage extends BasePage {
             this.wait.until(d->confirmDeleteEventBtn.isDisplayed());
             click(confirmDeleteEventBtn,WaitStrategy.CLICKABLE);
             Uninterruptibles.sleepUninterruptibly(3,TimeUnit.SECONDS);
-
             if(monitorsList.isEmpty())
             {
-                System.out.println("Event is Deleted !!!");
+                DriverManager.getDriver().switchTo().defaultContent();
                 return true;
             }
+
 
         }
         return false;
     }
 
+
+    /**
+     * Setting up actions to be performed for the monitor events
+     * @param action
+     */
+    public void setErrorEventAction(String action)
+    {
+         switch (Monitors.valueOf(action))
+         {
+             case STOP_PROCESSING:
+                 addMonitorEventActions(Monitors.STOP_PROCESSING);
+                 break;
+         }
+    }
 
 }

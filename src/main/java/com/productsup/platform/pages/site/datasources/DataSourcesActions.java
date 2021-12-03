@@ -21,7 +21,7 @@ public class DataSourcesActions {
                 .navigateToDataSourcesPage();
        dataSource.selectDataSource();
        dataSource.enterDetails();
-       dataSource.triggerAction();
+       dataSource.triggerAction(details);
     }
 
 }

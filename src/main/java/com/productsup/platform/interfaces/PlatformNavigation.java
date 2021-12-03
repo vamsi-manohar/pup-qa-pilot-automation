@@ -17,9 +17,7 @@ public interface PlatformNavigation {
    void navigateTo(String menu, Navigations navigations);
     default void navigateToMenuBar()
     {
-
         Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-
         BasePage.scrollIntoView(navbar);
         BasePage.mouseHover(navbar);
 

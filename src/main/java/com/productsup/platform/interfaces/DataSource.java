@@ -12,6 +12,7 @@ import org.openqa.selenium.support.FindBy;
 import org.testng.Assert;
 
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public interface DataSource {
@@ -20,7 +21,7 @@ public interface DataSource {
 
      void selectDataSource();
      void enterDetails();
-     void triggerAction();
+     void triggerAction(Map<String,String> data);
 
 
 

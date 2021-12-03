@@ -1,7 +1,7 @@
 package com.productsup.platform.pages.monitor.stages;
 
 import com.productsup.platform.driver.DriverManager;
-import com.productsup.platform.enums.MonitorStages;
+import com.productsup.platform.enums.Monitors;
 import com.productsup.platform.enums.WaitStrategy;
 import com.productsup.platform.pages.monitor.MonitorPage;
 import org.openqa.selenium.WebElement;
@@ -27,10 +27,10 @@ public class Export extends MonitorPage
 
     public void setErrorEventsAtExportStage(String eventName)
     {
-        switch(MonitorStages.valueOf(eventName))
+        switch(Monitors.valueOf(eventName))
         {
             case PERCENTAGE_OF_ADDED_ITEMS:
-                addErrorEvents(MonitorStages.PERCENTAGE_OF_ADDED_ITEMS);
+                addErrorEvents(Monitors.PERCENTAGE_OF_ADDED_ITEMS);
                 click(continueButton, WaitStrategy.CLICKABLE);
                 this.wait.until(d->thresholdValue.isDisplayed());
                 thresholdValue.clear();

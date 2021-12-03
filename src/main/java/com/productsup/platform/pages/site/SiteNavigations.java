@@ -11,6 +11,7 @@ import com.productsup.platform.pages.site.dataexports.DataExportsPage;
 import com.productsup.platform.pages.site.dataflow.DataFlowPage;
 import com.productsup.platform.pages.site.dataview.DataviewPage;
 import com.productsup.platform.pages.site.datasources.DataSourcesPage;
+import com.productsup.platform.pages.site.errorlog.ErrorLogPage;
 import com.productsup.platform.utils.DynamicLocatorStrategy;
 import org.openqa.selenium.By;
 
@@ -37,6 +38,7 @@ public class SiteNavigations extends BasePage implements PlatformNavigation
     private DataExportsPage dataExportsPage;
     private DataFlowPage dataFlowPage;
     private MonitorPage monitorPage;
+    private ErrorLogPage errorLogPage;
 
 
 
@@ -47,6 +49,7 @@ public class SiteNavigations extends BasePage implements PlatformNavigation
         this.dashboardPage = new SiteDashboard();
         this.dataFlowPage = new DataFlowPage();
         this.monitorPage = new MonitorPage();
+        this.errorLogPage = new ErrorLogPage();
     }
 
 
@@ -98,6 +101,15 @@ public class SiteNavigations extends BasePage implements PlatformNavigation
         return monitorPage;
     }
 
+    public ErrorLogPage navigateToErrorLogPage()
+    {
+        navigateToMenuBar();
+        navigateTo(menu,Navigations.ERROR_LOG);
+        Uninterruptibles.sleepUninterruptibly(3,TimeUnit.SECONDS);
+        return errorLogPage;
+
+    }
+
 
 
 
@@ -112,6 +124,8 @@ public class SiteNavigations extends BasePage implements PlatformNavigation
         Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
 
     }
+
+
 
 
 
