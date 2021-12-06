@@ -18,21 +18,22 @@ import com.productsup.platform.pages.platform.hierrarchy.PlatformOverview;
 public final class NavigationMenuOptionsTest extends BaseTest {
 
 
-	@FrameworkAnnotation(author = { "Vamsi Manohar" }, category = { CategoryType.SMOKE })
+	@FrameworkAnnotation(author = {"Vamsi"}, category = {CategoryType.SMOKE})
 	@Test
 	public void validatePlatformOptions(Map<String, String> details) {
 
-		try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions())
-		{
+		try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions()) {
 
+			logEnvironmentInfo();
 			ExtentLogger.info("Navigation options on platform at :: " + details.get("Platform_Hierrarchy") + " Level ");
 			PlatformOverview platformOverview = new PlatformOverview();
 			platformOverview.setPlatformInterface(PlatformHierarchyFactory.get(details.get("Platform_Hierrarchy")));
 			List<String> actual = platformOverview.platformSetup(details);
 			List<String> options = platformOverview.getSideBarNavigation().getAvailableOptions();
 			softly.assertThat(options).isNotEmpty().containsAll(actual);
+
+
 		}
 
 	}
-
 }

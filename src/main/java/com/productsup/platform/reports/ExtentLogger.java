@@ -24,6 +24,7 @@ public final class ExtentLogger {
 
 
 
+
 	public static void fail(String message) {
 		ExtentManager.getExtentTest().fail(message);
 	}

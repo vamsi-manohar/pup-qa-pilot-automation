@@ -12,6 +12,8 @@ import com.aventstack.extentreports.reporter.ExtentSparkReporter;
 import com.aventstack.extentreports.reporter.configuration.Theme;
 import com.productsup.platform.constants.Constants;
 import com.productsup.platform.enums.CategoryType;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.remote.RemoteWebDriver;
 
 public final class ExtentReport {
 
@@ -30,6 +32,7 @@ public final class ExtentReport {
 			spark.config().setTheme(Theme.DARK);
 			spark.config().setDocumentTitle("Automation Reports");
 			spark.config().setReportName("Extent Report demo");
+
 		}
 
 	}
