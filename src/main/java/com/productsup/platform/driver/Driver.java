@@ -1,12 +1,11 @@
 package com.productsup.platform.driver;
 
-import java.net.MalformedURLException;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 
-import com.productsup.platform.enums.ConfigProperties;
-import com.productsup.platform.exceptions.BrowserInvocationFailedException;
-import com.productsup.platform.factories.DriverFactory;
-import com.productsup.platform.utils.PropertyUtils;
+import com.google.common.util.concurrent.Uninterruptibles;
+import com.productsup.platform.enums.BrowserType;
+import com.productsup.platform.factories.DriverFactorySupplier;
 
 
 /**
@@ -38,18 +37,36 @@ public final class Driver {
 
 /**
  * Gets the browser value and initialize the browser based on that
- * @param browser  Value will be passed from Base Test class. Values can be chrome and firefox
+ * @param browser  Value will be passed from Base Test class. Values can be chrome, firefox,safari and edge
  */
 	public static void initDriver(String browser) {
 		if (Objects.isNull(DriverManager.getDriver())) {
-			try {
-				DriverManager.setDriver(DriverFactory.getDriver(browser));
-			} catch (MalformedURLException e) {
-				throw new BrowserInvocationFailedException("Browser Invocation Failed");
+			//DriverManager.setDriver(DriverFactory.getDriver(browser));
+			BrowserType browserType=null;
+			switch(browser)
+			{
+				case "chrome":
+					browserType = BrowserType.CHROME;
+					break;
+
+				case "firefox":
+					browserType=BrowserType.FIREFOX;
+					break;
+
+				case "safari":
+					browserType=BrowserType.SAFARI;
+					break;
+
+				case "edge":
+					browserType = BrowserType.EDGE;
+					break;
 			}
+
+			DriverManager.setDriver(DriverFactorySupplier.getDriver(browserType));
 
 			//
 			//DriverManager.getDriver().get(PropertyUtils.getValue(ConfigProperties.URL));
+			Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
 			DriverManager.getDriver().manage().window().maximize();
 
 		}

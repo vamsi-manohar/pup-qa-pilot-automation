@@ -1,7 +1,9 @@
 package com.productsup.platform.pages.login;
 
 import java.util.Base64;
+import java.util.concurrent.TimeUnit;
 
+import com.google.common.util.concurrent.Uninterruptibles;
 import com.productsup.platform.pages.account.AccountOverview;
 import org.openqa.selenium.By;
 
@@ -38,6 +40,7 @@ public class LoginPage extends BasePage {
 
     public AccountOverview loginToPlatform() {
         DriverManager.getDriver().navigate().to(PropertyUtils.getValue(ConfigProperties.URL));
+        //Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
         this.wait.until(d->loginFrame.isDisplayed());
         DriverManager.getDriver().switchTo().frame(loginFrame);
 
