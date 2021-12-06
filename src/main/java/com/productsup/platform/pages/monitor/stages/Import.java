@@ -1,16 +1,14 @@
 package com.productsup.platform.pages.monitor.stages;
 
 import com.productsup.platform.driver.DriverManager;
-import com.productsup.platform.enums.MonitorStages;
+import com.productsup.platform.enums.Monitors;
 import com.productsup.platform.enums.WaitStrategy;
-import com.productsup.platform.interfaces.Monitor;
 import com.productsup.platform.pages.monitor.MonitorPage;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
-import java.util.Map;
 
 public class Import extends MonitorPage {
 
@@ -30,16 +28,21 @@ public class Import extends MonitorPage {
 
     public void setErrorEventsAtImportStage(String eventName)
     {
-        switch(MonitorStages.valueOf(eventName))
+        switch(Monitors.valueOf(eventName))
         {
             case IMPORT_FAILED_FOR_DATA_SOURCE:
-                addErrorEvents(MonitorStages.IMPORT_FAILED_FOR_DATA_SOURCE);
+                addErrorEvents(Monitors.IMPORT_FAILED_FOR_DATA_SOURCE);
                 click(selectDataSource.get(0), WaitStrategy.CLICKABLE);
                 click(continueButton,WaitStrategy.CLICKABLE);
                 break;
 
             case NO_CHANGE_IN_DATA_SOURCE:
-                addErrorEvents(MonitorStages.NO_CHANGE_IN_DATA_SOURCE);
+                addErrorEvents(Monitors.NO_CHANGE_IN_DATA_SOURCE);
+                click(continueButton,WaitStrategy.CLICKABLE);
+                break;
+
+            case IMPORTED_ITEMS_COUNT_DECREASED:
+                addErrorEvents(Monitors.IMPORTED_ITEMS_COUNT_DECREASED);
                 click(continueButton,WaitStrategy.CLICKABLE);
                 break;
 

@@ -4,10 +4,8 @@ import com.google.common.util.concurrent.Uninterruptibles;
 import com.productsup.platform.driver.DriverManager;
 import com.productsup.platform.enums.DataSourceTypes;
 import com.productsup.platform.enums.WaitStrategy;
-import com.productsup.platform.factories.ExplicitWaitFactory;
 import com.productsup.platform.pages.BasePage;
 import com.productsup.platform.pages.site.SiteNavigations;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
@@ -22,11 +20,7 @@ public class DataSourcesPage extends BasePage {
 
 
 
-    private WebDriverWait wait;
-    private String info = "app-'%s'-tile div[class*='content'] pup-heading";
-    private String menu = "//*[text()='%s']";
-
-    By runStatusButton = By.cssSelector("pup-split-button[class='run-status-button split-button");
+    private final WebDriverWait wait;
 
     @FindBy(xpath = "//*[text()='Add Data Source']")
     private WebElement addDataSource;
@@ -38,10 +32,10 @@ public class DataSourcesPage extends BasePage {
     private WebElement continueButton;
 
     @FindBy(css = "app-site-controls  button[type='button']")
-    public List<WebElement> siteActionControlButtons;
+    private List<WebElement> siteActionControlButtons;
 
     @FindBy(css = "#overview td[class*='emphasis']")
-    private List<WebElement> availableDateSourcesList;
+    private  List<WebElement> availableDateSourcesList;
 
     @FindBy(css = "#overview a[class*='btn']")
     private List<WebElement> settingsIcon;
@@ -59,7 +53,10 @@ public class DataSourcesPage extends BasePage {
     private WebElement confirmModalBox;
 
     @FindBy(css="button[data-status='1']")
-    private WebElement pauseDataSourceBtn;
+    private List<WebElement> pauseDataSourceBtn;
+
+    @FindBy(css="button[data-status='0']")
+    private List<WebElement> activateDataSources;
 
 
     public DataSourcesPage() {
@@ -76,16 +73,24 @@ public class DataSourcesPage extends BasePage {
     }
 
 
+    /**
+     * Stores all the enum data
+     * @param dataSources
+     * @return
+     */
     public String getDataSources(DataSourceTypes dataSources) {
         return dataSources.getData();
     }
 
+
+    /**
+     * Assigning name to the newly added Data Source
+     * @param name
+     */
     public void assignNameToDataSource(String name) {
         Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
         inputDataSourceName.clear();
         sendKeys(inputDataSourceName, WaitStrategy.VISIBLE, name);
-
-        //inputDataSourceName.sendKeys(name);
         Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
         click(continueButton, WaitStrategy.CLICKABLE);
     }
@@ -95,28 +100,34 @@ public class DataSourcesPage extends BasePage {
     }
 
 
-    public void triggerSiteActionControls(DataSourceTypes dataSourceTypes) {
+    /**
+     *  Triggers the platform action on the data source
+     * @param dataSourceTypes
+     */
+    private void triggerSiteActionControls(DataSourceTypes dataSourceTypes) {
 
         String actionType = null;
         for (int i = 0; i < siteActionControlButtons.size(); i++) {
             actionType = siteActionControlButtons.get(i).getText();
-            if (getDataSources(dataSourceTypes).equals(actionType))
+            if (getDataSources(dataSourceTypes).equalsIgnoreCase(actionType))
             {
                 click( siteActionControlButtons.get(i),WaitStrategy.CLICKABLE);
-                //siteActionControlButtons.get(i).click();
                 Uninterruptibles.sleepUninterruptibly(10,TimeUnit.SECONDS);
-                //if (ExplicitWaitFactory.performExplicitWaitChecks(WaitStrategy.DISAPPEAR, runStatusButton)) {
                     break;
-                //}
-
             }
-
         }
         Uninterruptibles.sleepUninterruptibly(5,TimeUnit.SECONDS);
     }
 
-    public void triggerActionType(DataSourceTypes dataSourceTypes) {
-        switch (dataSourceTypes) {
+
+    /**
+     * Sets the platform actions on the Data Source
+     * @param actionType - RUN,IMPORT and EXPORT
+     */
+    public void triggerAction(String actionType)
+    {
+        switch(DataSourceTypes.valueOf(actionType))
+        {
             case IMPORT:
                 triggerSiteActionControls(DataSourceTypes.IMPORT);
                 break;
@@ -131,8 +142,14 @@ public class DataSourcesPage extends BasePage {
                 break;
 
         }
+
     }
 
+    /**
+     * Removes the data source
+     * @param dataSourceName
+     * @return
+     */
     public DataSourcesPage removeDataSource(String dataSourceName) {
         this.wait.until(d->!availableDateSourcesList.isEmpty());
         for (int i = 0; i < availableDateSourcesList.size(); i++)
@@ -149,6 +166,12 @@ public class DataSourcesPage extends BasePage {
         return this;
     }
 
+
+    /**
+     * Checks if Data source is successfully added
+     * @param dataSourceName
+     * @return
+     */
     public boolean checkIfDataSourceIsRemoved(String dataSourceName) {
 
         if(availableDateSourcesList.size()==0)
@@ -169,6 +192,10 @@ public class DataSourcesPage extends BasePage {
     }
 
 
+    /**
+     * Gets the imported data count
+     * @return
+     */
     public int getImportedItemsCount()
     {
         int count = new SiteNavigations().navigateToDashboardPage().getImportedItemsCount();
@@ -181,9 +208,10 @@ public class DataSourcesPage extends BasePage {
      */
     public  int removeDataSourceAndImport()
     {
+        System.out.println("Action :: " +DataSourceTypes.IMPORT.getData());
         new SiteNavigations().navigateToDataSourcesPage().
         removeDataSource("Main - Feed URL")
-                .triggerActionType(DataSourceTypes.IMPORT);
+                .triggerAction(DataSourceTypes.IMPORT.getData());
         DriverManager.getDriver().navigate().refresh();
         Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
         DriverManager.getDriver().navigate().refresh();
@@ -194,20 +222,29 @@ public class DataSourcesPage extends BasePage {
 
 
     /**
-     *  Pauses the data source
+     * Performs actions on the selected data source
      * @param dataSourceName
+     * @param dataSourceTypes - Allowed Actions are PAUSE and ACTIVATE
+     * @return
      */
-
-    public void pauseDataSource(String dataSourceName)
+    public DataSourcesPage performActionOnDataSource(String dataSourceName,DataSourceTypes dataSourceTypes)
     {
         for(int i=0;i<availableDateSourcesList.size();i++)
         {
-            if(availableDateSourcesList.get(i).getText().equalsIgnoreCase(dataSourceName))
+            System.out.println("Available Data Sources names :: " +availableDateSourcesList.get(i).getText());
+            if(availableDateSourcesList.get(i).getText().equalsIgnoreCase(dataSourceName)
+            && getDataSources(dataSourceTypes).equalsIgnoreCase("pause"))
             {
-                click(pauseDataSourceBtn,WaitStrategy.CLICKABLE);
-                break;
-            }
-        }
-    }
 
+                click(pauseDataSourceBtn.get(i),WaitStrategy.CLICKABLE);
+            }
+            else if(availableDateSourcesList.get(i).getText().equalsIgnoreCase(dataSourceName)
+                    && getDataSources(dataSourceTypes).equalsIgnoreCase("activate"))
+            {
+                click(activateDataSources.get(i),WaitStrategy.CLICKABLE);
+            }
+            break;
+        }
+        return this;
+    }
 }

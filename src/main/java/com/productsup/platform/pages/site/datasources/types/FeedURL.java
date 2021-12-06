@@ -12,6 +12,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.util.List;
+import java.util.Map;
 
 public class FeedURL extends DataSourcesPage implements DataSource
 {
@@ -69,8 +70,8 @@ public class FeedURL extends DataSourcesPage implements DataSource
 
 
     @Override
-    public void triggerAction() {
-          triggerActionType(DataSourceTypes.IMPORT);
+    public void triggerAction(Map<String,String> data) {
+          triggerAction(data.get("Platform_Action"));
     }
 
 

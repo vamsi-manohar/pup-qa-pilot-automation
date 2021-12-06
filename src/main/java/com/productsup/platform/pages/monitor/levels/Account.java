@@ -1,8 +1,7 @@
 package com.productsup.platform.pages.monitor.levels;
 
-import com.productsup.platform.enums.MonitorStages;
+import com.productsup.platform.enums.Monitors;
 import com.productsup.platform.interfaces.Monitor;
-import com.productsup.platform.pages.PlatformRouting;
 import com.productsup.platform.pages.monitor.MonitorPage;
 import com.productsup.platform.pages.site.SiteNavigations;
 
@@ -32,7 +31,13 @@ public class Account extends MonitorPage implements Monitor {
     }
 
     @Override
+    public void setActions(Map<String, String> data) {
+
+        setErrorEventAction(data.get("Monitor_Action"));
+    }
+
+    @Override
     public boolean validateMonitor(Map<String, String> data) {
-        return validateMonitorSetup(MonitorStages.valueOf(data.get("Error_Event")));
+        return validateMonitorSetup(Monitors.valueOf(data.get("Error_Event")));
     }
 }

@@ -8,6 +8,10 @@ public enum DataSourceTypes {
     EXPORT("Export"),
     RUN("Run"),
 
+    //Data Source Actions
+    PAUSE("pause"),
+    ACTIVATE("activate"),
+
     FEED_URL("Feed URL"),
     GOOGLE_SHEETS("Google Sheets"),
     GOOGLE_MERCHANT_CENTER("Google Merchant Center");

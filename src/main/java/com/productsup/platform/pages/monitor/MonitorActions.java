@@ -13,12 +13,27 @@ public class MonitorActions {
         this.monitor=monitor;
     }
 
+
+    /***
+     * Setting up the Monitor Interface with class objects
+     * @param data
+     * @return
+     */
     public boolean setupMonitors(Map<String,String> data)
     {
         monitor.selectPlatformHierrarchy(data);
         monitor.setMonitorAtStage(data);
         monitor.selectErrorEvent(data);
         monitor.setSeverity(data);
-       return monitor.validateMonitor(data);
+        monitor.setActions(data);
+        return monitor.validateMonitor(data);
     }
+
+
+    public void triggerErrorEventAction()
+    {
+
+    }
+
+
 }
