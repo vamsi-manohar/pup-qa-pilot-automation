@@ -3,6 +3,7 @@ package com.productsup.platform.pages.site.dataview;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
+import com.productsup.platform.driver.Driver;
 import com.productsup.platform.enums.RuleBoxes;
 import com.productsup.platform.pages.site.SiteNavigations;
 import com.productsup.platform.utils.DynamicLocatorStrategy;
@@ -21,6 +22,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public  class DataviewPage extends  BasePage {
 
 	private WebDriverWait wait;
+
+	@FindBy(css="pup-heading span[class='caption']")
+	private WebElement pageTitle;
 
 	@FindBy(css = "tbody[ng-show] tr")
 	private List<WebElement> productsInfo;
@@ -54,9 +58,26 @@ public  class DataviewPage extends  BasePage {
 	@FindBy(css="iframe[class='viewFrame']")
 	private WebElement viewFrame;
 
+	@FindBy(id="selectBoxGroup")
+	private List<WebElement> boxGroup;
+
+	@FindBy(css="form[role='search'] button[class*='save']")
+	private WebElement saveChanges;
+
+	@FindBy(css="#dataflow-ul-output button [class*='wrench']")
+			private WebElement ruleBoxWrenchIcon;
+
+
+
 	By dataFlowInput = By.id("dataflow-ul-input");
 	By dataFlowOutput = By.id("dataflow-ul-output");
 	By saveProcess = By.cssSelector("form[class*='hidden'] button[data-stages]");
+
+	private String wrenchIcon="#dataflow-ul-output li[data-title='%s'] button [class*='wrench']";
+	private String deleteBox = "#dataflow-ul-output li[data-title='%s'] button[class*='delete']";
+
+
+	//private String deleteBox="#box-configuration-column li[data-title='%s'] button[class*='delete']";
 
 	private String buttonType = "//*[text()='%s']";
 	//private String ruleBox = "li[data-title='%s']";
@@ -80,7 +101,7 @@ public  class DataviewPage extends  BasePage {
 
 	public DataviewPage() {
 		PageFactory.initElements(DriverManager.getDriver(), this);
-		this.wait = new WebDriverWait(DriverManager.getDriver(), 10);
+		this.wait = new WebDriverWait(DriverManager.getDriver(), 30);
 
 
 	}
@@ -115,7 +136,6 @@ public  class DataviewPage extends  BasePage {
 		for (int i = 0; i < productAttributes.size(); i++) {
 			scrollIntoView(productAttributes.get(i));
 			if (productAttributes.get(i).getText().equalsIgnoreCase(productAttribute)) {
-				//Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
 				clickUsingJSExecutor(editBtn.get(i));
 				ExplicitWaitFactory.performExplicitWait(WaitStrategy.VISIBLE, sideBar);
 				break;
@@ -142,20 +162,17 @@ public  class DataviewPage extends  BasePage {
 		values.stream().map(e->e.getText())
 				.distinct()
 				.forEach(e->data.add(e));
-
-	/*	for (int i = 0; i < values.size(); i++) {
-             allData.add(values.get(i).getText());
-		}
-*/
-		//return Lists.newArrayList(allData);
 		return data;
 	}
 
 
-	public void navigateToLargeView() {
+	public DataviewPage navigateToLargeView() {
 		DriverManager.getDriver().switchTo().frame(editFrame);
-		click(By.xpath(DynamicLocatorStrategy.getDynamicLocator(buttonType, "Large View")), WaitStrategy.CLICKABLE);
-		this.wait.until((d) -> filterBox.isDisplayed());
+		if(boxGroup.size()==0) {
+			click(By.xpath(DynamicLocatorStrategy.getDynamicLocator(buttonType, "Large View")), WaitStrategy.CLICKABLE);
+			this.wait.until((d) -> filterBox.isDisplayed());
+		}
+		return this;
 	}
 
 
@@ -319,14 +336,36 @@ public  class DataviewPage extends  BasePage {
 
 	public List<String> getColumnLables()
 	{
+		//DriverManager.getDriver().navigate().refresh();
 		List<String> allLabels= new ArrayList<>();
 		for(int i=0;i<getColumnLabels.size();i++)
 		{
+
 			allLabels.add(getColumnLabels.get(i).getText());
 		}
 		System.out.println("All Labels :: " +allLabels);
-
 		return allLabels;
 	}
 
+
+	/**
+	 * Deleting the rule box
+	 * @param ruleBox - rule box is provided in the spreadsheet
+	 */
+	public void deleteRuleBox(String ruleBox)
+	{
+
+		DriverManager.getDriver().switchTo().frame(editFrame);
+        click(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(wrenchIcon,getRuleBoxName(ruleBox))),WaitStrategy.CLICKABLE);
+		click(By.cssSelector(DynamicLocatorStrategy.getDynamicLocator(deleteBox,getRuleBoxName(ruleBox))),WaitStrategy.CLICKABLE);
+		this.wait.until(d->saveChanges.isDisplayed());
+		click(saveChanges, WaitStrategy.CLICKABLE);
+
+	}
+
+
+	public boolean onDataViewPage()
+	{
+		return pageTitle.getText().contains("Data View");
+	}
 }

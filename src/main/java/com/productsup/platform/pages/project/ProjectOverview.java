@@ -26,9 +26,7 @@ public class ProjectOverview extends BasePage {
         Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
         for (int i = 0; i < sitesList.size(); i++) {
             if (sitesList.get(i).getText().contains(siteName)) {
-
                 click(sitesList.get(i), WaitStrategy.CLICKABLE);
-
 
             }
 

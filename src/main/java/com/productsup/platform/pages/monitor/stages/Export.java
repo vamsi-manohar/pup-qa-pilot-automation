@@ -9,8 +9,12 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
+import java.util.List;
+
 public class Export extends MonitorPage
 {
+
+
 
     private WebDriverWait wait;
     public Export()
@@ -25,20 +29,22 @@ public class Export extends MonitorPage
     @FindBy(xpath="//span[text()='Continue']")
     private WebElement continueButton;
 
+    @FindBy(css="pup-toggle label div")
+    private List<WebElement> toggleList;
+
     public void setErrorEventsAtExportStage(String eventName)
     {
         switch(Monitors.valueOf(eventName))
         {
-            case PERCENTAGE_OF_ADDED_ITEMS:
-                addErrorEvents(Monitors.PERCENTAGE_OF_ADDED_ITEMS);
-                click(continueButton, WaitStrategy.CLICKABLE);
-                this.wait.until(d->thresholdValue.isDisplayed());
-                thresholdValue.clear();
-                sendKeys(thresholdValue,WaitStrategy.VISIBLE,"10");
+            case PERCENTAGE_OF_MISSING_MANDATORY_ATTRIBUTES:
+                addErrorEvents(Monitors.PERCENTAGE_OF_MISSING_MANDATORY_ATTRIBUTES);
                 break;
 
-
-
         }
+
+        click(continueButton,WaitStrategy.CLICKABLE);
+        this.wait.until(d->continueButton.isDisplayed());
+        click(continueButton,WaitStrategy.CLICKABLE);
+
     }
 }

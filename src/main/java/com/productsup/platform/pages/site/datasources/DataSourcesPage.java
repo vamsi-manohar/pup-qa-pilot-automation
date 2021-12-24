@@ -206,18 +206,19 @@ public class DataSourcesPage extends BasePage {
      *  Removes data source based on data source name and performs import action
      * @return
      */
-    public  int removeDataSourceAndImport()
+    public  int removeDataSourceAndImport(String action)
     {
-        System.out.println("Action :: " +DataSourceTypes.IMPORT.getData());
-        new SiteNavigations().navigateToDataSourcesPage().
-        removeDataSource("Main - Feed URL")
-                .triggerAction(DataSourceTypes.IMPORT.getData());
-        DriverManager.getDriver().navigate().refresh();
-        Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
-        DriverManager.getDriver().navigate().refresh();
-        Assert.assertTrue(checkIfDataSourceIsRemoved("Main - Feed URL"));
-        int count = getImportedItemsCount();
-        return count;
+
+            new SiteNavigations().navigateToDataSourcesPage().
+                    removeDataSource("Main - Feed URL")
+                    .triggerAction(action);
+            DriverManager.getDriver().navigate().refresh();
+            Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
+            DriverManager.getDriver().navigate().refresh();
+            Assert.assertTrue(checkIfDataSourceIsRemoved("Main - Feed URL"));
+            int count = getImportedItemsCount();
+            return count;
+
     }
 
 

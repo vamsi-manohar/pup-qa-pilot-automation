@@ -43,22 +43,10 @@ public class LoginPage extends BasePage {
         //Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
         this.wait.until(d->loginFrame.isDisplayed());
         DriverManager.getDriver().switchTo().frame(loginFrame);
-
-      /*  DriverManager.getDriver().switchTo().frame(DriverManager.getDriver().
-                findElement(By.cssSelector(
-                        "[src='//login.productsup.com?hl=en&url=https://platform.productsup.com']")))
-        ;*/
         enterUsername();
         enterPassword();
         clickLogin();
-
-
-// Not working effectively when navigating to data view module
-/*        DriverManager.getDriver().navigate().to(PropertyUtils.getValue(ConfigProperties.URL));
-        Cookie cookie = new Cookie("PHPSESSID", "gnlidb9cm070n1990hvl4mbg8q");
-        DriverManager.getDriver().manage().addCookie(cookie);
-        DriverManager.getDriver().navigate().to(PropertyUtils.getValue(ConfigProperties.URL));
-        Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);*/
+        DriverManager.getDriver().switchTo().defaultContent(); //added to check compatability
         return new AccountOverview();
     }
 

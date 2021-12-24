@@ -1,12 +1,16 @@
 package com.productsup.platform.pages.site.dataview;
 
+import com.productsup.platform.driver.Driver;
+import com.productsup.platform.driver.DriverManager;
 import com.productsup.platform.interfaces.DataView;
 import com.productsup.platform.pages.account.AccountOverview;
+import com.productsup.platform.pages.site.SiteNavigations;
 import org.testng.Assert;
 
+import java.util.List;
 import java.util.Map;
 
-public class DataviewActions extends DataviewPage{
+public class DataviewActions {
 
     private DataView dataView;
 
@@ -29,9 +33,22 @@ public class DataviewActions extends DataviewPage{
         dataView.enterRuleDetails(data);
         dataView.saveRuleBox(data);
         dataView.ruleTransformation(data);
-        Assert.assertTrue(dataView.validateRuleBox(data));
-        return validateRuleBoxesAddedToDataflow(data.get("Product_Attribute"),data.get("Apply_Rulebox_At"),
-                data.get("Rule_Box"));
+        return dataView.validateRuleBox(data);
+
 
     }
-}
+
+
+    public void
+    destroyRuleBox(Map<String, String> data)
+    {
+
+            DataviewPage dataviewPage=new DataviewPage();
+            dataviewPage.deleteRuleBox(data.get("Rule_Box"));
+            DriverManager.getDriver().navigate().refresh();
+
+        }
+
+    }
+
+

@@ -1,6 +1,7 @@
 package com.productsup.platform.pages.site.dataview.ruleboxes;
 
 import com.google.common.util.concurrent.Uninterruptibles;
+import com.productsup.platform.driver.Driver;
 import com.productsup.platform.driver.DriverManager;
 import com.productsup.platform.interfaces.DataView;
 import com.productsup.platform.pages.site.dataview.DataviewPage;

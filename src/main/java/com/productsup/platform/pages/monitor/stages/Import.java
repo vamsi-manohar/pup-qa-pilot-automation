@@ -18,8 +18,6 @@ public class Import extends MonitorPage {
         PageFactory.initElements(DriverManager.getDriver(),this);
     }
 
-
-
     @FindBy(css="pup-toggle div")
     private List<WebElement> selectDataSource;
 
@@ -33,20 +31,17 @@ public class Import extends MonitorPage {
             case IMPORT_FAILED_FOR_DATA_SOURCE:
                 addErrorEvents(Monitors.IMPORT_FAILED_FOR_DATA_SOURCE);
                 click(selectDataSource.get(0), WaitStrategy.CLICKABLE);
-                click(continueButton,WaitStrategy.CLICKABLE);
                 break;
-
             case NO_CHANGE_IN_DATA_SOURCE:
                 addErrorEvents(Monitors.NO_CHANGE_IN_DATA_SOURCE);
-                click(continueButton,WaitStrategy.CLICKABLE);
                 break;
-
             case IMPORTED_ITEMS_COUNT_DECREASED:
                 addErrorEvents(Monitors.IMPORTED_ITEMS_COUNT_DECREASED);
-                click(continueButton,WaitStrategy.CLICKABLE);
                 break;
 
         }
+
+        click(continueButton,WaitStrategy.CLICKABLE);
     }
 
 }

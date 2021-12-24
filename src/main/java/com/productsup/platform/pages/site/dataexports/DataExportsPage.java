@@ -53,7 +53,7 @@ public class DataExportsPage extends BasePage
     @FindBy(id="js-addDestination")
     private WebElement saveDestination;
 
-    @FindBy(css="pup-breadcrumb a[href*='export']")
+    @FindBy(css="a[href*='export']")
     private WebElement exportsPageMainLink;
 
     @FindBy(css="span[class*='channel-header']")
@@ -158,6 +158,7 @@ public class DataExportsPage extends BasePage
         this.wait.until(driver->addDestinatonBtn.isDisplayed());
        click(addDestinatonBtn,WaitStrategy.CLICKABLE);
        this.wait.until(driver->selectDestination.isDisplayed());
+       Uninterruptibles.sleepUninterruptibly(3,TimeUnit.SECONDS);
        selectValueFromDropdown(selectDestination,getExportChannels(exportChannels));
        this.wait.until(d->saveDestination.isDisplayed());
        click(saveDestination,WaitStrategy.CLICKABLE);
@@ -179,7 +180,7 @@ public class DataExportsPage extends BasePage
 
     public DataExportsPage navigateBackToMainExportsPage()
     {
-        //this.wait.until(d->exportsPageMainLink.isDisplayed());
+        this.wait.until(d->exportsPageMainLink.isDisplayed());
         click(exportsPageMainLink,WaitStrategy.CLICKABLE);
         return this;
     }
@@ -256,9 +257,6 @@ public class DataExportsPage extends BasePage
 
     public void deleteExportsTemplate(String exportChannelName)
     {
-
-
-       // DriverManager.getDriver().switchTo().frame(dataflowFrame);
         DriverManager.getDriver().switchTo().defaultContent();
         new SiteNavigations().navigateToDataExportsPage();
         int totalExportsAvailable = exportChannelsList.size();
@@ -283,7 +281,6 @@ public class DataExportsPage extends BasePage
     public boolean isOnDataExportsPage()
     {
         scrollIntoView(banner);
-        System.out.println(banner.getText());
         return banner.getText().contains("Exports");
     }
 

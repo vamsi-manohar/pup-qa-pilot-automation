@@ -20,7 +20,7 @@ public class Site extends MonitorPage implements Monitor {
                 .selectSite(data.get("Site_Name")).navigateToMonitorPage();
     }
 
-    @Override
+ /*   @Override
     public void setMonitorAtStage(Map<String, String> data)
     {
       setMonitorLevel(data.get("Monitor_At"));
@@ -40,7 +40,7 @@ public class Site extends MonitorPage implements Monitor {
     public void setActions(Map<String, String> data) {
         setErrorEventAction(data.get("Monitor_Action"));
     }
-
+*/
     @Override
     public boolean validateMonitor(Map<String, String> data) {
         return validateMonitorSetup(Monitors.valueOf(data.get("Error_Event")));

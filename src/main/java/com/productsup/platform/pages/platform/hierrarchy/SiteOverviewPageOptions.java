@@ -31,24 +31,24 @@ public class SiteOverviewPageOptions implements PlatformHierarchy {
 	 *  List of navigation options available at site level
 	 */
 	@Override
-	public List<String> getAvailableMenuOptions(Map<String, String> details) {
-		menuOptions.add("Dashboard");
-		menuOptions.add("Data Map");
-		menuOptions.add("Authentication");
-		menuOptions.add("Data Sources");
-		menuOptions.add("Data Services");
-		menuOptions.add("Exports A/B");
-		menuOptions.add("Designer");
-		menuOptions.add("Dataflow");
-		menuOptions.add("Data View");
-		menuOptions.add("Lists");
-		menuOptions.add("ROI Strategy");
-		menuOptions.add("Error Log");
-		menuOptions.add("Monitor");
-		menuOptions.add("Activity");
-		menuOptions.add("Tracking");
-		menuOptions.add("Settings");
-		return menuOptions;
+	public List<String> availableMenuOptions(Map<String, String> details) {
+		this.menuOptions.add("Dashboard");
+		this.menuOptions.add("Data Map");
+		this.menuOptions.add("Authentication");
+		this.menuOptions.add("Data Sources");
+		this.menuOptions.add("Data Services");
+		this.menuOptions.add("Exports A/B");
+		this.menuOptions.add("Designer");
+		this.menuOptions.add("Dataflow");
+		this.menuOptions.add("Data View");
+		this.menuOptions.add("Lists");
+		this.menuOptions.add("ROI Strategy");
+		this.menuOptions.add("Error Log");
+		this.menuOptions.add("Monitor");
+		this.menuOptions.add("Activity");
+		this.menuOptions.add("Tracking");
+		this.menuOptions.add("Settings");
+		return this.menuOptions;
 	}
 
 }

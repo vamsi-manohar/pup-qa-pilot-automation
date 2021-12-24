@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.productsup.platform.driver.DriverManager;
 import com.productsup.platform.pages.PlatformRouting;
+import com.productsup.platform.pages.account.AccountOverview;
 import com.productsup.platform.reports.ExtentLogger;
 import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -24,7 +25,8 @@ public class BaseTest {
 		Map<String,String>map=(Map<String,String>)data[0];
 		Driver.initDriver(map.get("Browser"));
 		getBrowserAndSystemDetails();
-		new PlatformRouting().getLoginPage().loginToPlatform();
+		new PlatformRouting().getLoginPage().loginToPlatform()
+		.selectAccount();
 	}
 
 
@@ -57,6 +59,11 @@ public class BaseTest {
 		ExtentLogger.info("Executed on version --> " +details.get("version"));
 	}
 
+
+	protected void switchToDefaultContent()
+	{
+		DriverManager.getDriver().switchTo().defaultContent();
+	}
 
 
 }

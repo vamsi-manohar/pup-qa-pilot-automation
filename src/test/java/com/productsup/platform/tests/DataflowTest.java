@@ -44,15 +44,20 @@ public class DataflowTest extends BaseTest
     }
 
 
-    @AfterMethod(alwaysRun = true)
+   @AfterMethod(alwaysRun = true)
     public void deleteAttributes()
     {
-        DataFlowPage dataFlowPage = new DataFlowPage();
-        DriverManager.getDriver().switchTo().defaultContent();
-        new SiteNavigations().navigateToDataFlowPage().selectExportChannel(exportChannel)
-                .deleteLinks(addedAttribute,dataFlowPage.OUTPUT_MODE)
-                .deleteAttributes(addedAttribute,dataFlowPage.INTERMEDIATE)
-                .deleteAttributes(addedAttribute,dataFlowPage.EXPORT);
+        try {
+            DataFlowPage dataFlowPage = new DataFlowPage();
+            DriverManager.getDriver().switchTo().defaultContent();
+            new SiteNavigations().navigateToDataFlowPage().selectExportChannel(exportChannel)
+                    .deleteLinks(addedAttribute, dataFlowPage.OUTPUT_MODE)
+                    .deleteAttributes(addedAttribute, dataFlowPage.INTERMEDIATE)
+                    .deleteAttributes(addedAttribute, dataFlowPage.EXPORT);
+        }catch(Exception e)
+        {
+            e.getMessage();
+        }
     }
 
 }

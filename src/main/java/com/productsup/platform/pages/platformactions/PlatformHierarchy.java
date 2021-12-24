@@ -17,5 +17,5 @@ import java.util.Map;
 public interface PlatformHierarchy {
 
 	void selectPlatformHierarchy(Map<String, String> details);
-	List<String> getAvailableMenuOptions(Map<String, String> details);
+	List<String> availableMenuOptions(Map<String, String> details);
 }

@@ -15,6 +15,7 @@ package com.productsup.platform.enums;
 public enum ConfigProperties {
 	
 	URL,
+	ACCOUNT,
 	USERNAME,
 	PASSWORD,
 	MAIN_FEED_URL,

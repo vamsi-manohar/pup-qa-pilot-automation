@@ -18,6 +18,8 @@ public enum Navigations {
 
     ERROR_LOG("Error Log"),
 
+
+
     DASHBOARD("Dashboard");
     //MONITOR;
 
