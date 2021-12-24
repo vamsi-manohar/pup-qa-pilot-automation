@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class DataExportsAction {
 
-//
+
 
     private DataExports dataExports;
 
@@ -35,33 +35,6 @@ public class DataExportsAction {
 
 
     }
-
-    public boolean peformExportOperations(Map<String,String>data)
-    {
-
-       /* new SiteNavigations().navigateToDataFlowPage()
-                .selectExportChannel(data.get("Export_Channel"))
-                .addAdditionalAttributes(DataFlowPage.INTERMEDIATE,"Automated_attr")
-                .addAdditionalAttributes(DataFlowPage.EXPORT,"Automated_attr")
-                .performMappingFromIntermediateToExport();
-                */
-        return true;
-    }
-
-
-
-/*
-    public boolean peformExportOperationsDemo()
-    {
-        boolean flag = new DataExportsPage().navigateBackToMainExportsPage()
-                .verifyExportChannelIsAdded(ExportChannels.FP_TEST_AUTOMATION);
-        Assert.assertTrue(flag);
-        new SiteNavigations().navigateToDataFlowPage()
-                .selectExportChannel("FP - Test Automation Export")
-                .performMappingFromIntermediateToExport();
-        return true;
-    }
-*/
 
     public void destroyExports(String exportChannelName)
     {

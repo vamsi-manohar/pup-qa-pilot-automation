@@ -6,8 +6,6 @@ import java.util.Map;
 public interface DataView
 {
 
-
-
     public void ruleTransformation(Map<String,String>data);
     public void getDataBeforeRuleBox(Map<String,String> data);
     public void addRuleBox(Map<String,String> data);

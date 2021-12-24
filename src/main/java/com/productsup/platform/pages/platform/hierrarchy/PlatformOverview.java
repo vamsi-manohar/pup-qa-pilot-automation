@@ -24,7 +24,7 @@ public class PlatformOverview {
 
 	public List<String> platformSetup(Map<String, String> details) {
 		platformInterface.selectPlatformHierarchy(details);
-		return platformInterface.getAvailableMenuOptions(details);
+		return platformInterface.availableMenuOptions(details);
 	}
 
 }

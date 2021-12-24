@@ -17,24 +17,24 @@ public class ProjectOverviewPageOptions implements PlatformHierarchy {
 	@Override
 	public void selectPlatformHierarchy(Map<String, String> details) {
 		
-		//new LoginPage().loginToPlatform().selectProject(details.get("Project_Name"));
+
 		new AccountOverview().selectProject(details.get("Project_Name"));
 		Uninterruptibles.sleepUninterruptibly(5, TimeUnit.SECONDS);
 		
 	}
 
 	@Override
-	public List<String> getAvailableMenuOptions(Map<String, String> details) {
+	public List<String> availableMenuOptions(Map<String, String> details) {
 
-		menuOptions.add("Project");
-		menuOptions.add("Dashboard");
-		menuOptions.add("Authentication");
-		menuOptions.add("Monitor");
-		menuOptions.add("Activity");
-		menuOptions.add("Order Sync");
-		menuOptions.add("Reporting");
-		menuOptions.add("Settings");
-		return menuOptions;
+		this.menuOptions.add("Project");
+		this.menuOptions.add("Dashboard");
+		this.menuOptions.add("Authentication");
+		this.menuOptions.add("Monitor");
+		this.menuOptions.add("Activity");
+		this.menuOptions.add("Order Sync");
+		this.menuOptions.add("Reporting");
+		this.menuOptions.add("Settings");
+		return this.menuOptions;
 	}
 
 }

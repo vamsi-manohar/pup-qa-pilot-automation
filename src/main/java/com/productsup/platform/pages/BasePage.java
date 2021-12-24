@@ -60,6 +60,11 @@ public class BasePage {
 		action.moveToElement(DriverManager.getDriver().findElement(by)).build().perform();
 	}
 
+	public static void mouseHover(WebElement element) {
+		Actions action = new Actions(DriverManager.getDriver());
+		action.moveToElement(element).build().perform();
+	}
+
 	protected void selectValueFromDropdown(By by, String value) {
 		Select select = new Select(DriverManager.getDriver().findElement(by));
 		select.selectByValue(value);

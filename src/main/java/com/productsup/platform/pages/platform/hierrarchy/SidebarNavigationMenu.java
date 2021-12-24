@@ -24,19 +24,24 @@ public class SidebarNavigationMenu extends BasePage {
 	@FindBy(css = "a span[class='title']")
 	List<WebElement> menuOptions;
 
-	By navBar = By.className("sidebar");
+	//Adding side bar logo page element
+
+	@FindBy(id="sidebar-logo")
+	private WebElement sideBarLogo;
+
+	//By navBar = By.className("sidebar");
 
 	public List<String> getAvailableOptions() {
 		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
-		mouseHover(navBar);
+		mouseHover(sideBarLogo);
 		Uninterruptibles.sleepUninterruptibly(3, TimeUnit.SECONDS);
 		for (int i = 0; i < menuOptions.size(); i++)
 		{
 			scrollIntoView(menuOptions.get(i));
-			availableOptions.add(menuOptions.get(i).getText());
+			this.availableOptions.add(menuOptions.get(i).getText());
 		}
 
-		return availableOptions;
+		return this.availableOptions;
 	}
 
 }

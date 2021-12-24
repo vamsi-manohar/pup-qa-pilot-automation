@@ -19,8 +19,7 @@ public class Intermediate extends MonitorPage
         this.wait = new WebDriverWait(DriverManager.getDriver(), 30);
     }
 
-    @FindBy(css="pup-input[class*='threshold'] input")
-    private WebElement thresholdValue;
+
 
     @FindBy(xpath="//span[text()='Continue']")
     private WebElement continueButton;
@@ -33,15 +32,17 @@ public class Intermediate extends MonitorPage
         {
             case PERCENTAGE_OF_ADDED_ITEMS:
                 addErrorEvents(Monitors.PERCENTAGE_OF_ADDED_ITEMS);
-                click(continueButton,WaitStrategy.CLICKABLE);
-                scrollIntoView(thresholdValue);
-                this.wait.until(d->thresholdValue.isDisplayed());
-                thresholdValue.clear();
-                sendKeys(thresholdValue,WaitStrategy.VISIBLE,"10");
-                break;
+
+//                scrollIntoView(thresholdValue);
+//                this.wait.until(d->thresholdValue.isDisplayed());
+//                thresholdValue.clear();
+//                sendKeys(thresholdValue,WaitStrategy.VISIBLE,"10");
+//                break;
 
 
 
         }
+
+        click(continueButton,WaitStrategy.CLICKABLE);
     }
 }

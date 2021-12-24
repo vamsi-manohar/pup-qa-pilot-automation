@@ -25,6 +25,7 @@ public enum Monitors {
     //Error Events at Export Stage
 
     FEED_UPLOAD_FAILED("Feed upload failed"),
+    PERCENTAGE_OF_MISSING_MANDATORY_ATTRIBUTES("Percentage of missing values in all mandatory attributes"),
     //Severity Levels
 
     LOW("low"),

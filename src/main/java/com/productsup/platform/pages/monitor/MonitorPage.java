@@ -1,13 +1,15 @@
 package com.productsup.platform.pages.monitor;
 
 import com.google.common.util.concurrent.Uninterruptibles;
+import com.productsup.platform.driver.Driver;
 import com.productsup.platform.driver.DriverManager;
 import com.productsup.platform.enums.Monitors;
 import com.productsup.platform.enums.WaitStrategy;
+import com.productsup.platform.exceptions.FrameworkExceptions;
 import com.productsup.platform.pages.BasePage;
+import com.productsup.platform.pages.monitor.stages.Export;
 import com.productsup.platform.pages.monitor.stages.Import;
 import com.productsup.platform.pages.monitor.stages.Intermediate;
-import com.productsup.platform.pages.site.SiteNavigations;
 import com.productsup.platform.utils.DynamicLocatorStrategy;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
@@ -59,8 +61,11 @@ public class MonitorPage extends BasePage {
     @FindBy(css="pup-toggle div div")
     private List<WebElement>actionToggles;
 
-    @FindBy(css="pup-heading span")
+    @FindBy(css="pup-heading span[class='caption']")
     private WebElement pageTitle;
+
+    @FindBy(css="pup-input[class*='threshold'] input")
+    private WebElement thresholdValue;
 
 
 
@@ -160,9 +165,10 @@ public class MonitorPage extends BasePage {
      * This method setups the monitor at the user defined level
      *
      * @param level - Import,Export,Intermediate,General
+     * @return
      */
 
-    public void setMonitorLevel(String level) {
+    public MonitorPage setMonitorLevel(String level) {
         switch (Monitors.valueOf(level)) {
             case IMPORT:
                 selectStage(Monitors.IMPORT);
@@ -181,14 +187,17 @@ public class MonitorPage extends BasePage {
                 break;
 
         }
+
+        return this;
     }
 
     /**
      * Sets up the severity level for the error events
      *
      * @param severityLevel
+     * @return
      */
-    public void setSeverityLevel(String severityLevel)
+    public MonitorPage setSeverityLevel(String severityLevel)
 
     {
         switch (Monitors.valueOf(severityLevel))
@@ -206,23 +215,61 @@ public class MonitorPage extends BasePage {
                 break;
 
         }
+
+        return this;
+    }
+
+
+    public MonitorPage setThresholdPercentage(String percentage)
+    {
+        if(!percentage.isEmpty()) {
+            this.wait.until(d -> thresholdValue.isDisplayed());
+            sendKeys(thresholdValue, WaitStrategy.VISIBLE, percentage);
+        }
+        return this;
     }
 
     /***
      *  Adds Error Events in the platform
      * @param data
+     * @return
      */
-    public void setErrorEvents(Map<String,String>data)
+    public MonitorPage selectErrorEvents(Map<String,String>data)
     {
         String stage = data.get("Monitor_At");
-        if(stage.equalsIgnoreCase("IMPORT"))
+        String errorEvent= data.get("Error_Event");
+
+        switch(stage)
         {
-            new Import().setErrorEventsAtImportStage(data.get("Error_Event"));
+            case "IMPORT":
+                new Import().setErrorEventsAtImportStage(errorEvent);
+                break;
+
+            case "INTERMEDIATE":
+                new Intermediate().setErrorEventsAtIntermediateStage(errorEvent);
+                break;
+
+            case "EXPORT":
+                new Export().setErrorEventsAtExportStage(errorEvent);
+                break;
+
+
         }
-        else if(stage.equalsIgnoreCase("INTERMEDIATE"))
-        {
-            new Intermediate().setErrorEventsAtIntermediateStage(data.get("Error_Event"));
-        }
+//        if(stage.equalsIgnoreCase("IMPORT"))
+//        {
+//            new Import().setErrorEventsAtImportStage(data.get("Error_Event"));
+//        }
+//        else if(stage.equalsIgnoreCase("INTERMEDIATE"))
+//        {
+//
+//        }
+//
+//        else
+//        {
+//            new Export().setErrorEventsAtExportStage(data);
+//        }
+
+        return this;
     }
 
 
@@ -255,12 +302,7 @@ public class MonitorPage extends BasePage {
      */
     public boolean deleteMonitorEvents()
     {
-        if(!pageTitle.getText().equalsIgnoreCase("Monitor"))
-        {
-            new SiteNavigations().navigateToMonitorPage();
-            DriverManager.getDriver().switchTo().frame(frame);
-        }
-
+        DriverManager.getDriver().switchTo().frame(frame);
         for(int i=0;i<monitorSettingsBtn.size();i++)
         {
             scrollIntoView(monitorSettingsBtn.get(i));
@@ -286,15 +328,36 @@ public class MonitorPage extends BasePage {
     /**
      * Setting up actions to be performed for the monitor events
      * @param action
+     * @return
      */
-    public void setErrorEventAction(String action)
-    {
-         switch (Monitors.valueOf(action))
-         {
-             case STOP_PROCESSING:
-                 addMonitorEventActions(Monitors.STOP_PROCESSING);
-                 break;
-         }
+    public MonitorPage setErrorEventAction(String action) {
+
+        if(!action.isEmpty()) {
+            switch (Monitors.valueOf(action)) {
+                case STOP_PROCESSING:
+                    addMonitorEventActions(Monitors.STOP_PROCESSING);
+                    break;
+            }
+        }
+
+        return this;
+
     }
+
+
+    public boolean isOnMonitorPage()
+    {
+     
+            this.wait.until(d -> pageTitle.isDisplayed());
+        return pageTitle.getText().equalsIgnoreCase("Monitor");
+
+    }
+
+
+    public void switchToMonitorFrame()
+    {
+        DriverManager.getDriver().switchTo().frame(frame);
+    }
+
 
 }

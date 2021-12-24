@@ -1,10 +1,10 @@
 package com.productsup.platform.pages.platform.hierrarchy;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.google.common.base.Supplier;
 import com.productsup.platform.pages.platformactions.PlatformHierarchy;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class PlatformHierarchyFactory {
 

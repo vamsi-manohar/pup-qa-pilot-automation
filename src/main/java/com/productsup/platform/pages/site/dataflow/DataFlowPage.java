@@ -264,8 +264,10 @@ public class DataFlowPage extends BasePage {
             if(boxes.toLowerCase().contains(ruleBoxesType.toLowerCase()))
         {
             mouseHover(By.cssSelector(locator));
+            DriverManager.getDriver().switchTo().defaultContent();
                    return true;
         }
+        DriverManager.getDriver().switchTo().defaultContent();
             return false;
     }
 

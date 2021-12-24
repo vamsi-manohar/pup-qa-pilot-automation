@@ -52,8 +52,8 @@ public class ListenerClass implements ITestListener, ISuiteListener {
 			ExtentLogger.fail(result.getMethod().getMethodName(), true);
 
 			// Adding error log to the report
-			ExtentLogger.fail(result.getThrowable().toString());
-			ExtentLogger.fail(Arrays.toString(result.getThrowable().getStackTrace()));
+			ExtentLogger.fail(result.getThrowable().getMessage());
+			//ExtentLogger.fail(Arrays.toString(result.getThrowable().getStackTrace()));
 			//ELKUtils.addDetailsToELK(result.getMethod().getDescription(),"fail");
 		
 	}

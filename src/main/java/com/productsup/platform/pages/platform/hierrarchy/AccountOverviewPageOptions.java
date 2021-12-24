@@ -19,19 +19,19 @@ public class AccountOverviewPageOptions implements PlatformHierarchy {
 	}
 
 	@Override
-	public List<String> getAvailableMenuOptions(Map<String, String> details) {
-		menuOptions.add("Overview");
-		menuOptions.add("Dashboard");
-		menuOptions.add("Authentication");
-		menuOptions.add("User Management");
-		menuOptions.add("Monitor");
-		menuOptions.add("FTP Accounts");
-		menuOptions.add("Activity");
-		menuOptions.add("Settings");
+	public List<String> availableMenuOptions(Map<String, String> details) {
+		this.menuOptions.add("Overview");
+		this.menuOptions.add("Dashboard");
+		this.menuOptions.add("Authentication");
+		this.menuOptions.add("User Management");
+		this.menuOptions.add("Monitor");
+		this.menuOptions.add("FTP Accounts");
+		this.menuOptions.add("Activity");
+		this.menuOptions.add("Settings");
 		
 		
 
-		return menuOptions;
+		return this.menuOptions;
 	}
 
 }

@@ -20,7 +20,8 @@ import java.util.Map;
 
 public class DataExportsTest extends BaseTest
 {
-    private static int counter=0;
+
+    private boolean executeSuccess=false;
 
     private List<String> attributeList=new ArrayList<>(Arrays.asList("brand","discounted price"
     ,"product name","product url","retail price","product id","product category"
@@ -35,6 +36,7 @@ public class DataExportsTest extends BaseTest
         DataExportsPage dataExportsPage = new DataExportsPage();
         try (AutoCloseableSoftAssertions softly = new AutoCloseableSoftAssertions())
         {
+            logEnvironmentInfo();
             this.exportChannelTemplate = data.get("Export_Channel");
             dataExportsAction.setDataExports(DataExportsFactory.get(data.get("Export_Destination")));
             dataExportsAction.setupExportChannel(data);
@@ -45,17 +47,22 @@ public class DataExportsTest extends BaseTest
                     verifyAttributesOfExportChannelTemplate(data.get("Export_Channel"))).containsAll(attributeList);
             softly.assertThat(dataExportsPage.verifyExportTemplateInDataView(data.get("Export_Channel")))
                     .isEqualTo(true);
+            executeSuccess=true;
         }
     }
 
     @AfterMethod(alwaysRun = true)
     public void resetDataExports()
     {
-        System.out.println("Entered into After Method");
-        System.out.println(counter);
-        if(counter==0) {
-            dataExportsAction.destroyExports(exportChannelTemplate);
-            counter++;
+
+        try {
+            if (executeSuccess) {
+                dataExportsAction.destroyExports(exportChannelTemplate);
+                executeSuccess = false;
+            }
+        } catch(Exception e)
+        {
+            e.getMessage();
         }
 
     }

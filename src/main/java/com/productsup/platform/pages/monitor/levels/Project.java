@@ -16,7 +16,7 @@ public class Project extends MonitorPage implements Monitor
         new AccountOverview().selectProject(data.get("Project_Name"));
         new SiteNavigations().navigateToMonitorPage();
     }
-    @Override
+  /*  @Override
     public void setMonitorAtStage(Map<String, String> data)
     {
         setMonitorLevel(data.get("Monitor_At"));
@@ -36,7 +36,7 @@ public class Project extends MonitorPage implements Monitor
     @Override
     public void setActions(Map<String, String> data) {
         setErrorEventAction(data.get("Monitor_Action"));
-    }
+    }*/
 
     @Override
     public boolean validateMonitor(Map<String, String> data) {

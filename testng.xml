@@ -16,7 +16,7 @@
         <class name="com.productsup.platform.tests.DataExportsTest"/>
         <class name="com.productsup.platform.tests.MonitorTest"/>
         <class name="com.productsup.platform.tests.DataflowTest"/>
-
+        <class name="com.productsup.platform.tests.AccountOverviewTest"/>
 
     </classes>
   </test> <!-- Test -->
